@@ -109,8 +109,14 @@ public class Relic {
 	}
 	
 	public String getRandomLetter() {
-		String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-		return letters[(int)(Math.random()*24)];
+		// String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+		// return letters[(int)(Math.random()*24)];
+		// You don't need an array for everything
+		return String.valueOf(getRandomChar());
+	}
+
+	public char getRandomChar() {
+		return (char)(Math.random() * ('z' - 'a') + 'a');
 	}
 	
 	public void deleteRelic() {
