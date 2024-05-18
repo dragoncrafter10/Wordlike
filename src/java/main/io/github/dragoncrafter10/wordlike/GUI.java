@@ -3,8 +3,10 @@ package io.github.dragoncrafter10.wordlike;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import io.github.dragoncrafter10.wordlike.gui.WordBox;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -16,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI implements ActionListener {
+	// this entire thing makes me sad - S.
 	JLabel winloss, hiddenWord, enemyModifierText;
 	JLabel[][] letters = new JLabel[7][5];
 	JLabel[] relicsText = new JLabel[100];
@@ -25,7 +28,7 @@ public class GUI implements ActionListener {
 	JPanel guessRow, newG, enemyStuff, container, consumablesRow, infoContainer;
 	JPanel[] letterRows = new JPanel[7];
 	JPanel[] infoRows = new JPanel[100];
-	JTextField wordBox;
+	WordBox wordBox;
 	JButton check, newGame, showInfo, hideInfo;
 	String guess = "aaaaa";
 	int[] hints = {0, 0, 0, 0, 0};
@@ -110,8 +113,15 @@ public class GUI implements ActionListener {
 			}
 		}
 		
-		wordBox = new JTextField(10);
-		guessRow.add(wordBox);
+		// wordBox = new JTextField(10);
+		// guessRow.add(wordBox);
+
+		// TODO: Right now, WordBox needs special management to be added to components.
+		//  I will try to fix this in the future. - S.
+		wordBox = new WordBox(5);
+		// guessRow.add(wordBox);
+		wordBox.addAllTo(guessRow);
+
 		check = new JButton("Check");
 		check.setActionCommand("Check");
 		check.addActionListener(this);
@@ -262,13 +272,13 @@ public class GUI implements ActionListener {
 				hiddenWord.setText("The word was: " + runner.getWord());
 				newGame.setText("New Game");
 			}
-			wordBox.setText("");
+			wordBox.clear();
 			
 		} else {
 			if(round > 0 && round < 8) {
 				winloss.setText("Invalid input!");
 			}
-			wordBox.setText("");
+			wordBox.clear();
 		}
 		
 	}
@@ -284,7 +294,7 @@ public class GUI implements ActionListener {
 		updateLabels(5, zeros, "     ");
 		updateLabels(6, zeros, "     ");
 		updateLabels(7, zeros, "     ");
-		wordBox.setText("");
+		wordBox.clear();
 		hiddenWord.setText("");
 		runner.generateWord();
 		for(int x = 0; x < 20; x++) {
@@ -357,7 +367,7 @@ public class GUI implements ActionListener {
 			updateLabels(5, zeros, "     ");
 			updateLabels(6, zeros, "     ");
 			updateLabels(7, zeros, "     ");
-			wordBox.setText("");
+			wordBox.clear();
 			hiddenWord.setText("");
 			runner.generateWord();
 			for(int x = 0; x < 20; x++) {
