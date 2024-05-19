@@ -34,6 +34,7 @@ public class LetterBox extends JTextField {
         setCaretColor(new Color(0, true)); // To make the carat invisible
         setText(" ");
         setCaretPosition(1);
+        setHorizontalAlignment(JTextField.CENTER);
     }
     
     public LetterBox prev(){

@@ -275,9 +275,10 @@ public class GUI implements ActionListener {
 			
 		} else {
 			if(round > 0 && round < 8) {
-				winloss.setText("Invalid input!");
+				winloss.setText("Invalid word!");
+			} else {
+				wordBox.clear();
 			}
-			wordBox.clear();
 		}
 		
 	}

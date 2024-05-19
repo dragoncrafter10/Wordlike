@@ -1,5 +1,6 @@
 package io.github.dragoncrafter10.wordlike.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.Iterator;
@@ -32,14 +33,6 @@ public class WordBox extends Container implements Iterable<LetterBox> {
 			lbs[i - 1].setNext(lbs[i]);
             this.add(lbs[i]);
 		}
-    }
-
-    public void addAllTo(Container comp){
-        LetterBox lb = head;
-        while(lb != null){
-            comp.add(lb);
-            lb = lb.next();
-        }
     }
 
     public String getText() {
