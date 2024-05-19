@@ -1,8 +1,11 @@
 package io.github.dragoncrafter10.wordlike.gui;
 
 import java.awt.Container;
+import java.awt.GridLayout;
+import java.util.Iterator;
+import java.util.Spliterator;
 
-public class WordBox extends Container {
+public class WordBox extends Container implements Iterable<LetterBox> {
 
     private transient int width;
 
@@ -16,6 +19,8 @@ public class WordBox extends Container {
         }
 
         this.width = width;
+
+        this.setLayout(new GridLayout(0, width));
 
         head = new LetterBox();
         
@@ -55,6 +60,32 @@ public class WordBox extends Container {
             lb.setText("");
             lb = lb.next();
         }
+    }
+
+    @Override
+    public Iterator<LetterBox> iterator() {
+        return new Iterator<LetterBox>() {
+            LetterBox lb = head;
+
+            @Override
+            public boolean hasNext() {
+                return lb != null;
+            }
+
+            @Override
+            public LetterBox next() {
+                final LetterBox ret = lb;
+                lb = lb.next();
+                return ret;
+            }
+            
+        };
+    }
+
+    @Override
+    public Spliterator<LetterBox> spliterator() {
+        // TODO: potential for better impl
+        return Iterable.super.spliterator();
     }
 
     

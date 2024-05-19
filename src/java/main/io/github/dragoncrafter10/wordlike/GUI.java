@@ -116,11 +116,10 @@ public class GUI implements ActionListener {
 		// wordBox = new JTextField(10);
 		// guessRow.add(wordBox);
 
-		// TODO: Right now, WordBox needs special management to be added to components.
-		//  I will try to fix this in the future. - S.
+		// it has been fixed - S.
 		wordBox = new WordBox(5);
-		// guessRow.add(wordBox);
-		wordBox.addAllTo(guessRow);
+		guessRow.add(wordBox);
+		
 
 		check = new JButton("Check");
 		check.setActionCommand("Check");
