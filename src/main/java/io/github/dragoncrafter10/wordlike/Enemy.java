@@ -1,10 +1,31 @@
 package io.github.dragoncrafter10.wordlike;
 
-public class Enemy {
-	String word, modText, prevGuess, swappedWord, cGuess;
-	String[] letterList = {"", "", "", "", ""};
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Enemy implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1l;
+
+	String name;
+	transient String word, modText, prevGuess, swappedWord, cGuess;
+	transient String[] letterList = {"", "", "", "", ""};
 	int modifier;
-	StringBuilder sb = new StringBuilder();
+	transient StringBuilder sb = new StringBuilder();
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in)
+     throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		letterList = new String[5];
+		letterList[0] = "";
+		letterList[1] = "";
+		letterList[2] = "";
+		letterList[3] = "";
+		letterList[4] = "";
+		setupModifiers();
+	 }
 	
 	public Enemy() {
 		
@@ -26,6 +47,10 @@ public class Enemy {
 		letterList[4] = "";
 		setupModifiers();
 	}
+
+	public String getName(){
+		return name;
+	}
 	
 	public String getModText() {
 		return modText;
@@ -40,6 +65,7 @@ public class Enemy {
 				letterList[2] = getRandomLetter();
 			}
 			modText = "Enemy is faking letters " + letterList[0] + ", " + letterList[1] + ", "  + letterList[2];
+			name = "The Salesman";
 			break;
 		case 2:
 			while(letterList[0].equals(letterList[1]) || letterList[0].equals(letterList[2]) || letterList[1].equals(letterList[2])) {
@@ -48,21 +74,26 @@ public class Enemy {
 				letterList[2] = getRandomLetter();
 			}
 			modText = "Enemy is hiding letters " + letterList[0] + ", " + letterList[1] + ", "  + letterList[2];
+			name = "The Curtain";
 			break;
 		case 3:
 			letterList[0] = getRandomLetter();
 			modText = "Enemy is preventing " + letterList[0] + " from being guessed";
+			name = "The Stone";
 			break;
 		case 4:
 			modText = "Enemy may display false information";
+			name = "The Politician";
 			break;
 		case 5:
 			prevGuess = "";
 			modText = "Enemy is preventing repeat letters";
+			name = "The Scroll";
 			break;
 		case 6:
 			swappedWord = "";
 			modText = "Enemy swaps guessed letters";
+			name = "The Fidget";
 			break;
 		}
 	}

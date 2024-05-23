@@ -3,11 +3,17 @@ package io.github.dragoncrafter10.wordlike.meta;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.io.ObjectInputFilter.FilterInfo;
+import java.io.ObjectInputFilter.Status;
 import java.nio.file.Path;
+
+import io.github.dragoncrafter10.wordlike.Enemy;
 
 /**
  * A collection of data that can be saved for meta-progression.
@@ -16,9 +22,17 @@ public final class SaveData implements Serializable {
     
     // Increment this on every commit and pr that changes this file
     @Serial
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 2l;
 
-    public Dictionary discoveries;
+    private Dictionary discoveries;
+
+    public SaveData() {
+        discoveries = new Dictionary();
+    }
+
+    public Dictionary getDiscoveries(){
+        return discoveries;
+    }
 
     /**
      * Saves this data by writing it to the given {@link ObjectOutputStream}. This
@@ -108,5 +122,48 @@ public final class SaveData implements Serializable {
         File file = path.toFile();
 
         return save(file);
+    }
+
+    public static SaveData load(InputStream in){
+        try (ObjectInputStream is = new ObjectInputStream(in)) {
+            is.setObjectInputFilter(SaveData::filterSaveData);
+            return (SaveData) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static SaveData load(ObjectInputStream in){
+        try {
+            return (SaveData) in.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static Status filterSaveData(FilterInfo fi) {
+        return Status.ALLOWED; // TODO: filter properly
+    }
+
+    static final Class<?>[] arr = {
+        SaveData.class,
+        Dictionary.class,
+        DictionaryEntry.class,
+        Enemy.class,
+    };
+
+    public void pushDiscovery(DictionaryEntry entry){
+        discoveries.add(entry);
+    }
+
+    public void wipe(){
+        discoveries.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "SaveData [discoveries=" + discoveries + "]";
     }
 }

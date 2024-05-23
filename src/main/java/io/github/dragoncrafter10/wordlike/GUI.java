@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import io.github.dragoncrafter10.wordlike.gui.WordBox;
+import io.github.dragoncrafter10.wordlike.meta.Dictionary;
+import io.github.dragoncrafter10.wordlike.meta.DictionaryGUI;
+import io.github.dragoncrafter10.wordlike.meta.EnemyEntry;
+import io.github.dragoncrafter10.wordlike.meta.SaveData;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,8 +20,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class GUI implements ActionListener {
+	DictionaryGUI dictGui;
+
 	// this entire thing makes me sad - S.
 	JLabel winloss, hiddenWord, enemyModifierText;
 	JLabel[][] letters = new JLabel[7][5];
@@ -230,6 +239,23 @@ public class GUI implements ActionListener {
 		confirmFrame.setVisible(false);
 		
 		rewardsScreen();
+
+		// TODO: needs refinement, but the idea is cool, right? - S.
+		dictGui = new DictionaryGUI();
+		Dictionary test = new Dictionary();
+		test.add(new EnemyEntry(new Enemy("AAAAA", 1)));
+		dictGui.updateKnowledge(test);
+		dictGui.pack();
+
+		SaveData sd = new SaveData();
+		sd.pushDiscovery(new EnemyEntry(new Enemy("AAAAA", 1)));
+		sd.pushDiscovery(new EnemyEntry(new Enemy("BBBBB", 2)));
+		try {
+			System.out.println(SaveData.load(new FileInputStream(new File("save.ser"))));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void displayHints() {
